@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Welcome!</title>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <meta http-equiv="refresh" content="300"></meta>
+        <script>
+            /*<![CDATA[*/
+            window.onload = function() {
+                document.getElementById('timer').innerHTML =
+                5 + ":" + 00;
+                startTimer();
+            };
+
+            function startTimer() {
+                var presentTime = document.getElementById('timer').innerHTML;
+                var timeArray = presentTime.split(/[:]+/);
+                var m = timeArray[0];
+                var s = checkSecond((timeArray[1] - 1));
+                if(s >= 59) {m = m-1;}
+
+                document.getElementById('timer').innerHTML = m + ":" + s;
+                setTimeout(startTimer, 1000);
+            }
+
+            function checkSecond(sec) {
+                if (sec < 10 && sec >= 0) {sec = "0" + sec;}
+                if (sec < 0) {sec = "59";}
+                return sec;
+            }
+            /*]]>*/
+        </script>
+    </head>
+    
+    <body>
+        
+        <div align="right">
+            <form th:action="@{/logout}" method="POST">
+                <p><input type="submit" value="Logout"/></p>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
+            <b>Session will timeout in <span id='timer'></span></b>
+        </div>
+        
+            <h1>You have successfully logged in!</h1>
+
+        <ol>
+            <li th:each="note : ${notes}">
+                <b th:text="${note.title}">title</b>
+                <p th:text="${note.content}">content</p>
+                <form th:action="@{/notebook/{id}(id=${note.id})}" th:method="DELETE">
+                    <input type="submit" value="Remove note"/>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </li>   
+        </ol>
+
+        <div align="center">
+            <form th:action="@{/addNote}" method="POST">
+                <p><input placeholder="Title" type="text" name="title"/></p>
+                <p><textarea placeholder="Content" name="content"/></p>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p><input type="submit" value="Submit"/></p>
+            </form>
+        </div>
+
+
+    </body>
+</html>

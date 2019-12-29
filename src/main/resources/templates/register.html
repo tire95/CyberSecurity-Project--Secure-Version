@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Register</title>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    </head>
+    <body>
+        
+        <div align="center">
+            <h1>Register a new account below.</h1>
+            <p style="color:red" th:text='${errorMsg}'></p>
+            <form th:action="@{/register}" method="POST">
+                <p><input placeholder="Username" type="text" name="username" autofocus="autofocus"/></p>
+                <p><input placeholder="Password" type="password" name="password" pattern=".{8,}" title="8 characters minimum"/></p>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p><input type="submit" value="Create new account" /></p>
+            </form>
+        </div>
+       
+
+
+    </body>
+</html>
